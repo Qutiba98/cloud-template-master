@@ -21,7 +21,7 @@ function AuthPage() {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log('Logged in as:', userCredential.user);
-          navigate('/'); // Navigate to dashboard on successful login
+          navigate('/profile'); // Navigate to dashboard on successful login
         })
         .catch((err) => setError(err.message));
     } else {
@@ -29,7 +29,7 @@ function AuthPage() {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log('Registered as:', userCredential.user);
-          navigate('/'); // Navigate to dashboard on successful sign up
+          navigate('/login'); // Navigate to dashboard on successful sign up
         })
         .catch((err) => setError(err.message));
     }

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { auth, db } from '../firebase'; // Import Firebase Auth and Firestore
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore query methods
+import { auth, db } from '../firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 function UserPlans() {
-  const [userEmail, setUserEmail] = useState(null); // To store the logged-in user's email
-  const [userPlans, setUserPlans] = useState([]); // To store the user's selected plans
-  const [loading, setLoading] = useState(true); // Loading state for the query
+  const [userEmail, setUserEmail] = useState(null);
+  const [userPlans, setUserPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch the logged-in user's email
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUserEmail(user.email); // Set the logged-in user's email
+        setUserEmail(user.email);
       } else {
-        setUserEmail(null); // No user is logged in
+        setUserEmail(null);
       }
     });
 

@@ -12,19 +12,19 @@ function Users() {
         </div>
         <div className='user-info-container'>
           <div>
-            <p className='title-lg user-number'>15,000</p>
+            <p className='title-lg user-number'>112</p>
             <span className='text-md user-download'>Active Users</span>
           </div>
           <div>
-            <p className='title-lg user-number'>500</p>
+            <p className='title-lg user-number'>14</p>
             <span className='text-md user-download'>Projects Hosted</span>
           </div>
           <div>
-            <p className='title-lg user-number'>7,800</p>
+            <p className='title-lg user-number'>352</p>
             <span className='text-md user-download'>Contributors</span>
           </div>
           <div>
-            <p className='title-lg user-number'>10,000</p>
+            <p className='title-lg user-number'>1482</p>
             <span className='text-md user-download'>Satisfied Customers</span>
           </div>
         </div>
