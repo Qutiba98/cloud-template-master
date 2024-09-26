@@ -29,7 +29,7 @@
     color: var(--text-light);
 }
 .user-card{
-    background-color: white;
+    background-color: #fafafa;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -13,7 +13,7 @@ function Menu() {
   return (
     <div className={`header__top`}>
         <div className='logo-container'>
-            <a href="#" className='logo text-lg'>Cloud Template</a>
+            <a href="#" className='logo text-lg'>CloudVault</a>
         </div>
         <nav className='navbar'>
             <a href="#" className='menu-toggle text-md' onClick={toggleMenu}>MENU</a>
