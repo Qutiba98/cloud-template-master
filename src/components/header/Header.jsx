@@ -15,7 +15,6 @@ function Header() {
     <header className='header'>
         <div className={width > 976 ? 'container' : 'header__container'}>
             <Menu/>
-            
         </div>
     </header>
   )
