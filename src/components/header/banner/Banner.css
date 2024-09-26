@@ -4,6 +4,7 @@
     justify-content: center;
     position: relative;
     height: 556px;
+    background-color: #1e90ff;
 }
 .benner__img-container{
     position: absolute;
@@ -42,9 +43,7 @@
     }
 }
 @media (min-width: 976px){
-    .banner{
-        justify-content: space-between;
-    }
+   
     .benner__img-container{
         position: relative;
         width: 60%;
