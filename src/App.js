@@ -6,22 +6,21 @@ import AuthPage from './components/signInAndSignUp/AuthPage';
 import Profile from './components/profile/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserPlans from './components/UserPlans';
-import Contact from './components/contact/Contact'; // Import Contact Component
+import Contact from './components/main/Contact/Contact'; 
+import StyledClock from './components/main/StyledClock/StyledClock'; // Correct path to StyledClock
 
 function App() {
   return (
     <Router>
       <div>
         <Header />
+        <StyledClock /> {/* Display clock */}
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<AuthPage />} />
           <Route path="/UserPlans" element={<UserPlans />} />
-<<<<<<< HEAD
-          <Route path="/contact" element={<Contact />} /> {/* Contact Page Route */}
-=======
+          <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
->>>>>>> 5f95fd323a77e7210c7ce3c72602d77e7ec8e44a
         </Routes>
         <Footer />
       </div>

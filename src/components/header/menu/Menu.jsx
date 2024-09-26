@@ -56,10 +56,11 @@ function Menu() {
             </a>
           </li>
           <li className='menu__item'>
-            <a href="#contact" className='menu__link text-md' onClick={() => handleNavigation('#contact')}>
-              Contact
-            </a>
-          </li>
+  <a className='menu__link text-md' onClick={() => navigate('/contact')}>
+    Contact
+  </a>
+</li>
+
           <button className='btn-green-md menu-btn trans' onClick={() => navigate('/login')}>
             Get Started
           </button>
