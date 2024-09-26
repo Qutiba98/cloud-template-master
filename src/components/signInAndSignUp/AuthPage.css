@@ -1,0 +1,72 @@
+:root {
+    --bg-color-blue: #1e90ff; /* Replace with your specific color code if needed */
+  }
+  
+  .auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: var(--bg-color-blue);
+  }
+  
+  .auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .auth-title {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .auth-input {
+    padding: 16px 24px;
+    font-size: 1.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .auth-btn {
+    background-color: var(--bg-color-green);
+    border: 1px solid var(--bg-color-green);
+    color: white;
+    font-weight: 600;
+    font-size: 1.6rem;
+    padding: 16px 24px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+  }
+  
+  .auth-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .auth-toggle {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .auth-link {
+    color: #4caf50;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+  
