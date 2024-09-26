@@ -1,15 +1,18 @@
-.header__top{
+.header__top {
     background-color: black;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px 16px;
     color: white;
-    position: relative;
+    position: fixed; /* Makes the nav sticky */
+    top: 0; /* Sticks the nav to the top of the page */
+    z-index: 1000; /* Ensure it stays on top of other content */
     font-weight: bold;
     width: 100%;
 }
-.menu{
+
+.menu {
     background-color: black;
     padding: 8px 16px 16px 16px;
     flex-direction: column;
@@ -21,46 +24,60 @@
     display: none;
     z-index: 100;
 }
-.menu-toggle{
+
+.menu-toggle {
     color: var(--text-light);
 }
-.menu__item{
+
+.menu__item {
     width: 100%;
 }
-.menu__link{
+
+.menu__link {
     color: var(--text-light);
     padding: 10px 0;
 }
-.menu__link:hover{
+
+.menu__link:hover {
     color: white;
 }
-.menu-btn{
+
+.menu-btn {
     width: 100%;
 }
-.menu-btn:hover{
+
+.menu-btn:hover {
     background-color: white;
-    border-color:white;
+    border-color: white;
     color: var(--bg-color-blue);
 }
-.active{
+
+.active {
     display: flex;
 }
 
-@media (min-width: 576px){
-    .header__top , .menu{
+@media (min-width: 576px) {
+    .header__top,
+    .menu {
         padding: 20px;
     }
 }
-@media (min-width: 976px){
-    .header__top{
+
+@media (min-width: 976px) {
+    .header__top {
         background-color: transparent;
         justify-content: space-between;
         padding: 16px 0;
+        position: sticky; /* Keep the sticky behavior */
+        top: 0; /* Stick to top on larger screens too */
+        z-index: 1000; /* Make sure it's still on top */
     }
-    .menu-toggle{
+
+    .menu-toggle {
         display: none;
     }
-    .menu{
+
+    .menu {
         display: flex;
         position: relative;
         flex-direction: row;
@@ -68,11 +85,13 @@
         background-color: transparent;
         padding: 0;
     }
-    .menu__item{
+
+    .menu__item {
         margin: 0 16px;
         width: auto;
     }
-    .menu__link{
+
+    .menu__link {
         padding: 10px;
     }
 }
