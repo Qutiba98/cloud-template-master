@@ -17,7 +17,6 @@ function App() {
           <Route path="/" element={<Main />} /> {/* Default Route */}
           <Route path="/login" element={<AuthPage />} /> {/* AuthPage Route */}
         </Routes>
-        
         <Footer />
       </div>
     </Router>
