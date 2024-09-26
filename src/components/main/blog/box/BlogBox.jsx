@@ -1,19 +1,19 @@
-import React from 'react'
-import './BlogBox.css'
-import blog from '../../../../assets/images/image_1.jpg.webp'
-function BlogBox() {
+import React from 'react';
+import './BlogBox.css';
+
+function BlogBox({ image, title }) {
   return (
     <>
-        <div className='blog-box'>
-            <div className='blog-img-container'>
-                <img src={blog} alt="Blog-Images" className='blog-img'/>
-            </div>
-            <div>
-                <p className='text-md blog-box-text'>Everthing You Need to Know About Cloud Template</p>
-            </div>
+      <div className='blog-box'>
+        <div className='blog-img-container'>
+          <img src={image} alt="Blog-Images" className='blog-img'/>
         </div>
+        <div>
+          <p className='text-md blog-box-text'>{title}</p>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default BlogBox
+export default BlogBox;
