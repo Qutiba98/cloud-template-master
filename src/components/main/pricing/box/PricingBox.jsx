@@ -1,7 +1,7 @@
 import React from 'react';
 import './PricingBox.css';
 
-function PricingBox({ planName, price, features, isFree }) {
+function PricingBox({ planName, price, features, isFree, onSelectPlan }) {
   return (
     <div className='pricing-box'>
       <p className='text-md price-text'>{planName}</p>
@@ -13,7 +13,11 @@ function PricingBox({ planName, price, features, isFree }) {
       {features.map((feature, index) => (
         <p key={index} className='text-md price-text'><span className='price-number'>{feature}</span></p>
       ))}
-      <button className='btn-pink-lg pricing-btn'>Choose Plan</button>
+      
+      {/* Add onClick to call onSelectPlan */}
+      <button className='btn-pink-lg pricing-btn' onClick={() => onSelectPlan(planName, price)}>
+        Choose Plan
+      </button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Header from './components/header/Header';
 import Main from './components/main/Main';
 import AuthPage from './components/signInAndSignUp/AuthPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import React Router
+import UserPlans from './components/UserPlans';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} /> {/* Default Route */}
           <Route path="/login" element={<AuthPage />} /> {/* AuthPage Route */}
+          <Route path="/UserPlans" element={<UserPlans />} />
         </Routes>
         <Footer />
       </div>
