@@ -16,6 +16,7 @@ function Header() {
         <div className={width > 976 ? 'container' : 'header__container'}>
             <Menu/>
             <Banner Ban={Ban}/>
+            
         </div>
     </header>
   )
