@@ -85,8 +85,8 @@ function Menu() {
 
           {/* Conditionally render either Sign Up button or user dropdown */}
           {!user ? (
-            <button className='btn-green-md menu-btn trans' onClick={() => navigate('/signup')}>
-              Sign Up
+            <button className='btn-green-md menu-btn trans' onClick={() => navigate('/login')}>
+              Register
             </button>
           ) : (
             <div className="dropdown">
