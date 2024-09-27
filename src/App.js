@@ -10,6 +10,7 @@ import Profile from './components/profile/Profile';
 import ProfileEdit from './components/profile/ProfileEdit';
 import Contract from './components/profile/Contract';
 import Payment from './components/payment/Payment';
+import Plan from './components/plan/Plan';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/profile/contract" element={<Contract />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/plan" element={<Plan />} />
         </Routes>
         <Footer />
       </div>
