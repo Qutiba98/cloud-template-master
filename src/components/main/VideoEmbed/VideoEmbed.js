@@ -34,15 +34,18 @@ const VideoEmbed = () => {
   }
 
   return (
-    <div className="video-container">
-      {videoData ? (
-        <>
-          <h2>{videoData.snippet.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: videoData.player.embedHtml }} />
-        </>
-      ) : (
-        <p>Loading video...</p>
-      )}
+    <div className="video-wrapper">
+      <h2 className='title-md'>Check out what we offer on our cloud storage service</h2>
+      <div className="video-container">
+        {videoData ? (
+          <>
+            <h3>{videoData.snippet.title}</h3>
+            <div dangerouslySetInnerHTML={{ __html: videoData.player.embedHtml }} />
+          </>
+        ) : (
+          <p>Loading video...</p>
+        )}
+      </div>
     </div>
   );
 };
