@@ -7,6 +7,7 @@ import Users from './users/Users';
 import Pricing from './pricing/Pricing';
 import Questions from './questions/Questions';
 import Banner from '../header/banner/Banner';
+import StyledClock from '../main/StyledClock/StyledClock';
 
 import partner1 from '../../assets/images/partner-1.png.webp';
 import partner2 from '../../assets/images/partner-2.png.webp';
@@ -52,6 +53,11 @@ function Main() {
 
       <section id="questions">
         <Questions />
+      </section>
+
+      {/* Add the StyledClock here */}
+      <section id="clock">
+        <StyledClock />
       </section>
     </main>
   );

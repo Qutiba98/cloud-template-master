@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Menu.css';
+import { auth } from '../../../firebase';
+
 
 function Menu() {
   let [toggle, setToggle] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate hook
+  const [user, setUser] = useState(null); // Manage user session state
+  const navigate = useNavigate();
 
-  let toggleMenu = () => {
+  useEffect(() => {
+    // Listen to user authentication state changes (assuming you're using Firebase auth)
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user); // Set user if logged in, otherwise set to null
+    });
+
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  const toggleMenu = () => {
     setToggle(toggle = !toggle);
   };
 
-  // Function to handle navigation within the app
   const handleNavigation = (path) => {
     if (window.location.pathname !== '/') {
-      navigate('/'); // Navigate to the home page if not already on it
+      navigate('/');
     }
     setTimeout(() => {
       window.location.hash = path; // Scroll to the desired section after navigation
     }, 100); // Add a slight delay to ensure navigation before scrolling
+  };
+
+  const handleLogout = () => {
+    auth.signOut()
+      .then(() => {
+        navigate('/'); // Redirect to home after logout
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
   };
 
   return (
@@ -25,7 +47,7 @@ function Menu() {
       <div className='logo-container'>
         <a href="#home" className='logo text-lg' onClick={() => handleNavigation('#home')}>
           CloudVault
-        </a> {/* Scroll to Home section */}
+        </a>
       </div>
       <nav className='navbar'>
         <a href="#" className='menu-toggle text-md' onClick={toggleMenu}>MENU</a>
@@ -56,14 +78,25 @@ function Menu() {
             </a>
           </li>
           <li className='menu__item'>
-  <a className='menu__link text-md' onClick={() => navigate('/contact')}>
-    Contact
-  </a>
-</li>
+            <a className='menu__link text-md' onClick={() => navigate('/contact')}>
+              Contact
+            </a>
+          </li>
 
-          <button className='btn-green-md menu-btn trans' onClick={() => navigate('/login')}>
-            Get Started
-          </button>
+          {/* Conditionally render either Sign Up button or user dropdown */}
+          {!user ? (
+            <button className='btn-green-md menu-btn trans' onClick={() => navigate('/signup')}>
+              Sign Up
+            </button>
+          ) : (
+            <div className="dropdown">
+              <button className="dropbtn">{user.displayName || user.email}</button>
+              <div className="dropdown-content">
+                <a onClick={() => navigate('/profile')}>Profile</a>
+                <a onClick={handleLogout}>Logout</a>
+              </div>
+            </div>
+          )}
         </ul>
       </nav>
     </div>

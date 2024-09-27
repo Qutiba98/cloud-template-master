@@ -1,5 +1,5 @@
 .software{
-    padding: 96px 15px;
+    padding: 40px 15px;
 }
 .software-item-container{
     display: flex;
@@ -8,7 +8,6 @@
 .software-title{
     text-align: center;
     color: var(--title-color);
-    margin-bottom: 48px;
 }
 .software-img-container{
     padding-top: 48px;

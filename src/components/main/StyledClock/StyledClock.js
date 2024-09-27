@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './StyledClock.css'; // Import the CSS for styling the clock
+import './StyledClock.css';
 
 const StyledClock = () => {
   const [time, setTime] = useState('');

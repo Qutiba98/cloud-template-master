@@ -1,9 +1,9 @@
 .styled-clock {
     font-family: 'Courier New', Courier, monospace;
-    color: #00f3ff; /* Bright neon blue */
+    color: #203d67;
     font-size: 80px;
     text-align: center;
-    background-color: black;
+    background-color: #fafafa;
     padding: 20px;
   }
   
