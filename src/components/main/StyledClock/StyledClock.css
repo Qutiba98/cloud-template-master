@@ -1,0 +1,13 @@
+.styled-clock {
+    font-family: 'Courier New', Courier, monospace;
+    color: #203d67;
+    font-size: 80px;
+    text-align: center;
+    background-color: #fafafa;
+    padding: 20px;
+  }
+  
+  .styled-clock p {
+    margin: 0;
+  }
+  
