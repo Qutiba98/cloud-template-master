@@ -15,6 +15,7 @@ import partner3 from '../../assets/images/partner-3.png.webp';
 import partner4 from '../../assets/images/partner-4.png.webp';
 import partner5 from '../../assets/images/partner-5.png.webp';
 import Ban from '../../assets/images/undraw_co-working_825n.svg';
+import VideoEmbed from './VideoEmbed/VideoEmbed';
 
 const partners = [
   { src: partner1, alt: "Microsoft" },
@@ -29,6 +30,9 @@ function Main() {
     <main className='main'>
       <section id="home">
         <Banner Ban={Ban} />
+      </section>
+      <section id="home">
+        <VideoEmbed />
       </section>
 
       <section id="company">
