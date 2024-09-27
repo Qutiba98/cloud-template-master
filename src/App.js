@@ -6,6 +6,8 @@ import Footer from './components/footer/Footer';
 import AuthPage from './components/signInAndSignUp/AuthPage';
 import UserPlans from './components/UserPlans';
 import Contact from './components/main/Contact/Contact'; 
+import VideoEmbed from './components/main/VideoEmbed/VideoEmbed'; // Import the video component
+
 import Profile from './components/profile/Profile';
 import ProfileEdit from './components/profile/ProfileEdit';
 import Contract from './components/profile/Contract';
@@ -17,6 +19,7 @@ function App() {
     <Router>
       <div>
         <Header />
+        <VideoEmbed /> 
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<AuthPage />} />
