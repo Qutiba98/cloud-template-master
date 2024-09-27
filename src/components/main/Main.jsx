@@ -8,7 +8,7 @@ import Pricing from './pricing/Pricing';
 import Questions from './questions/Questions';
 import Banner from '../header/banner/Banner';
 import VideoEmbed from './VideoEmbed/VideoEmbed';
-import StyledClock from '../main/StyledClock/StyledClock';
+
 
 import partner1 from '../../assets/images/partner-1.png.webp';
 import partner2 from '../../assets/images/partner-2.png.webp';
@@ -16,7 +16,7 @@ import partner3 from '../../assets/images/partner-3.png.webp';
 import partner4 from '../../assets/images/partner-4.png.webp';
 import partner5 from '../../assets/images/partner-5.png.webp';
 import Ban from '../../assets/images/undraw_co-working_825n.svg';
-import VideoEmbed from './VideoEmbed/VideoEmbed';
+
 
 const partners = [
   { src: partner1, alt: "Microsoft" },
