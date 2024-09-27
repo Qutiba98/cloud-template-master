@@ -39,7 +39,6 @@ const VideoEmbed = () => {
       <div className="video-container">
         {videoData ? (
           <>
-            <h3>{videoData.snippet.title}</h3>
             <div dangerouslySetInnerHTML={{ __html: videoData.player.embedHtml }} />
           </>
         ) : (

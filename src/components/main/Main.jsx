@@ -32,7 +32,7 @@ function Main() {
       <section id="home">
         <Banner Ban={Ban} />
       </section>
-      <section id="home">
+      <section id="video">
         <VideoEmbed />
       </section>
 
@@ -52,10 +52,6 @@ function Main() {
         <Software />
       </section>
 
-      <section id="video">  
-        <VideoEmbed />
-      </section>
-      
       <section id="users">
         <Users />
       </section>
