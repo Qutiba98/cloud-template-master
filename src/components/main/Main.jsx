@@ -7,6 +7,7 @@ import Users from './users/Users';
 import Pricing from './pricing/Pricing';
 import Questions from './questions/Questions';
 import Banner from '../header/banner/Banner';
+import VideoEmbed from './VideoEmbed/VideoEmbed';
 import StyledClock from '../main/StyledClock/StyledClock';
 
 import partner1 from '../../assets/images/partner-1.png.webp';
@@ -47,6 +48,10 @@ function Main() {
         <Software />
       </section>
 
+      <section id="video">  
+        <VideoEmbed />
+      </section>
+      
       <section id="users">
         <Users />
       </section>
@@ -55,10 +60,6 @@ function Main() {
         <Questions />
       </section>
 
-      {/* Add the StyledClock here */}
-      <section id="clock">
-        <StyledClock />
-      </section>
     </main>
   );
 }
