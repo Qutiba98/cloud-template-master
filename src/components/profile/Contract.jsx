@@ -1,47 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../firebase';
-import { doc, getDoc } from 'firebase/firestore'; // Update to getDoc for fetching a single document
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import './contract.css';
 
 function Contract() {
-  const [contract, setContract] = useState(null); // Single contract
-  const [userDetails, setUserDetails] = useState({}); // To store user information
+  const [contract, setContract] = useState(null); 
+  const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchContract = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          // Fetch user data from the 'users' collection
-          const userDoc = doc(db, 'users', user.uid); // Fetch specific user document
-          const docSnapshot = await getDoc(userDoc);
+  const fetchContract = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = doc(db, 'users', user.uid);
+        const docSnapshot = await getDoc(userDoc);
 
-          if (docSnapshot.exists()) {
-            const userData = docSnapshot.data();
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
 
-            // Check if the user has a subscription plan
-            if (userData.subscriptionPlan) {
-              setContract(userData.subscriptionPlan); // Set the contract to the user's subscription plan
-              setUserDetails({
-                fullName: userData.fullName || 'N/A',
-                email: userData.email || 'N/A',
-                phoneNumber: userData.phoneNumber || 'N/A',
-              });
-            } else {
-              setError('No subscription plan found.');
-            }
+          if (userData.subscriptionPlan) {
+            const address = userData.address || {}; // Access the address object
+
+            setContract(userData.subscriptionPlan);
+            setUserDetails({
+              fullName: userData.fullName || 'N/A',
+              email: userData.email || 'N/A',
+              phoneNumber: userData.phoneNumber || 'N/A',
+              address: {
+                city: address.city || 'N/A',
+                street: address.street || 'N/A',
+                country: address.country || 'N/A',
+                zip: address.zip || 'N/A',
+              }, // Extract the parts of the address
+            });
           } else {
-            setError('User data not found.');
+            setError('No subscription plan found.');
           }
+        } else {
+          setError('User data not found.');
         }
-      } catch (err) {
-        console.error('Error fetching contract:', err);
-        setError('Failed to load contract. Please try again.');
       }
-    };
+    } catch (err) {
+      console.error('Error fetching contract:', err);
+      setError('Failed to load contract. Please try again.');
+    }
+  };
 
+  useEffect(() => {
     fetchContract();
   }, []);
 
@@ -55,6 +61,11 @@ function Contract() {
             <p><strong>Full Name:</strong> ${userDetails.fullName}</p>
             <p><strong>Email:</strong> ${userDetails.email}</p>
             <p><strong>Phone Number:</strong> ${userDetails.phoneNumber}</p>
+            <p><strong>Address:</strong></p>
+            <p>Street: ${userDetails.address.street}</p>
+            <p>City: ${userDetails.address.city}</p>
+            <p>Country: ${userDetails.address.country}</p>
+            <p>ZIP Code: ${userDetails.address.zip}</p>
             <hr>
             <p><strong>Subscription Details:</strong></p>
             <p><strong>Plan Name:</strong> ${contract.planName}</p>
@@ -65,15 +76,34 @@ function Contract() {
           </div>
         `,
         confirmButtonText: 'Close',
-        width: '600px', // Customize width to make it look more like a contract
+        width: '600px',
         customClass: {
-          popup: 'contract-popup' // Add more styling in CSS for the popup if needed
+          popup: 'contract-popup',
         }
       });
     }
   };
 
+  const handlePlanUpdate = async (newPlan, price, userDoc) => {
+    const currentDate = new Date();
+    const newExpirationDate = new Date();
+    newExpirationDate.setMonth(newExpirationDate.getMonth() + 1); // Extend by 1 month
+
+    await updateDoc(userDoc, {
+      'subscriptionPlan.planName': newPlan,
+      'subscriptionPlan.signingDate': currentDate,
+      'subscriptionPlan.expirationDate': newExpirationDate,
+      'subscriptionPlan.price': price,
+    });
+
+    Swal.fire('Plan Changed!', `Your plan has been changed to the ${newPlan} plan.`, 'success');
+    fetchContract();
+  };
+
   const handleAddSubscription = () => {
+    const user = auth.currentUser;
+    const userDoc = doc(db, 'users', user.uid);
+
     Swal.fire({
       title: 'Add New Subscription',
       input: 'select',
@@ -86,31 +116,58 @@ function Contract() {
       inputPlaceholder: 'Select a plan',
       showCancelButton: true,
       confirmButtonText: 'Upgrade/Downgrade',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire('Plan Change Confirmed!', `You selected the ${result.value} plan.`, 'success');
-        // Add logic here to handle the subscription change
+        const newPlan = result.value;
+        let price;
+
+        switch (newPlan) {
+          case 'basic':
+            price = 9.99;
+            break;
+          case 'pro':
+            price = 19.99;
+            break;
+          case 'business':
+            price = 29.99;
+            break;
+          case 'enterprise':
+            price = 49.99;
+            break;
+          default:
+            price = contract.price;
+        }
+
+        if (newPlan > contract.planName) {
+          await handlePlanUpdate(newPlan, price, userDoc);
+        } else {
+          await updateDoc(userDoc, {
+            'subscriptionPlan.planName': newPlan,
+            'subscriptionPlan.price': price,
+          });
+          Swal.fire('Plan downgraded', `You have successfully downgraded to the ${newPlan} plan.`, 'success');
+          fetchContract();
+        }
       }
     });
   };
 
   const calculateCardColor = (expirationDate) => {
-    if (!expirationDate) return '#00838d'; // Default color if no expiration date
+    if (!expirationDate) return '#00838d'; 
 
     const currentDate = new Date();
-    const expiration = new Date(expirationDate.seconds * 1000); // Convert timestamp to Date
-    const daysUntilExpiration = Math.floor((expiration - currentDate) / (1000 * 60 * 60 * 24)); // Calculate days until expiration
+    const expiration = new Date(expirationDate.seconds * 1000); 
+    const daysUntilExpiration = Math.floor((expiration - currentDate) / (1000 * 60 * 60 * 24)); 
 
     if (daysUntilExpiration <= 3) {
-      return 'red'; // Red color when expiration is in 3 or fewer days
+      return '#dc2626'; 
     } else if (daysUntilExpiration <= 10) {
-      return 'yellow'; // Yellow color when expiration is in 10 or fewer days
+      return '#ca8a04'; 
     } else {
-      return 'green'; // Default color for active contracts
+      return '#15803d'; 
     }
   };
 
-  // Hide expired contracts for regular users, show only to admins
   if (contract && contract.expirationDate) {
     const expirationDate = new Date(contract.expirationDate.seconds * 1000);
     if (new Date() > expirationDate) {
@@ -121,7 +178,7 @@ function Contract() {
   return (
     <div className="contracts-container">
       <button className="add-subscription-btn" onClick={handleAddSubscription}>
-        Add New Subscription
+        Extend or Add New Subscription
       </button>
 
       <div className="contracts-content">
@@ -133,7 +190,7 @@ function Contract() {
               className="card1"
               href="#"
               style={{
-                '--card-color': calculateCardColor(contract.expirationDate), // Set color based on expiration
+                '--card-color': calculateCardColor(contract.expirationDate),
               }}
             >
               <p>{contract.planName}</p>

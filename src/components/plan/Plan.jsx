@@ -2,22 +2,34 @@ import React, { useEffect, useState } from 'react';
 import './plan.css';
 import PricingBox from '../main/pricing/box/PricingBox';
 import { auth, db } from '../../firebase';
-import { doc, updateDoc } from 'firebase/firestore'; // Import updateDoc for updating user's document
+import { doc, getDoc, updateDoc } from 'firebase/firestore'; // Import getDoc for fetching user data and updateDoc for updating user's document
 import { useNavigate } from 'react-router-dom';
 
 function Plan() {
   const [userEmail, setUserEmail] = useState(null);
   const [userId, setUserId] = useState(null); // To store user's ID for document update
+  const [currentPlan, setCurrentPlan] = useState(null); // To store the current user's plan
   const navigate = useNavigate();
 
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo(0, 0);
 
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUserEmail(user.email);
         setUserId(user.uid); // Set userId for document update
+
+        // Fetch the user's subscription plan from Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        const docSnapshot = await getDoc(userDocRef);
+
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          if (userData.subscriptionPlan) {
+            setCurrentPlan(userData.subscriptionPlan.planName); // Set the current plan
+          }
+        }
       } else {
         setUserEmail(null);
         navigate('/login'); // Redirect to login page if not logged in
@@ -30,6 +42,12 @@ function Plan() {
   const handleSelectPlan = async (planName, price) => {
     if (!userEmail || !userId) {
       navigate('/login');
+      return;
+    }
+
+    // If the user already has a subscription other than the "Basic Plan", redirect to the contracts page
+    if (currentPlan && currentPlan !== 'Basic Plan') {
+      navigate('/profile/contract'); // Redirect to the contracts page
       return;
     }
 
