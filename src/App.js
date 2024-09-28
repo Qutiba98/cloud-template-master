@@ -6,11 +6,13 @@ import Footer from './components/footer/Footer';
 import AuthPage from './components/signInAndSignUp/AuthPage';
 import UserPlans from './components/UserPlans';
 import Contact from './components/main/Contact/Contact'; 
+
 import Profile from './components/profile/Profile';
 import ProfileEdit from './components/profile/ProfileEdit';
 import Contract from './components/profile/Contract';
 import Payment from './components/payment/Payment';
 import Plan from './components/plan/Plan';
+import AdminDashboard from './components/adminDashboard/AdminDashboard';
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/profile/contract" element={<Contract />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/plan" element={<Plan />} />
+          <Route path="/dashboard" element={<AdminDashboard />} />
         </Routes>
         <Footer />
       </div>

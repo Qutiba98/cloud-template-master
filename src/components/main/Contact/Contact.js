@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import './Contact.css';
@@ -12,6 +12,11 @@ const Contact = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState(null);
+
+  // Scroll to the top of the page when the component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Handle input changes
   const handleChange = (e) => {

@@ -37,6 +37,7 @@ function Pricing() {
         email: userEmail,
         planName: planName,
         price: price,
+        stauts:'Pending',
         timestamp: new Date(),
       });
       navigate(`/plan?name=${planName}&price=${price}`); // Navigate to the Plan page with selected plan details

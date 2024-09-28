@@ -7,7 +7,8 @@ import Users from './users/Users';
 import Pricing from './pricing/Pricing';
 import Questions from './questions/Questions';
 import Banner from '../header/banner/Banner';
-import StyledClock from '../main/StyledClock/StyledClock';
+import VideoEmbed from './VideoEmbed/VideoEmbed';
+
 
 import partner1 from '../../assets/images/partner-1.png.webp';
 import partner2 from '../../assets/images/partner-2.png.webp';
@@ -15,6 +16,7 @@ import partner3 from '../../assets/images/partner-3.png.webp';
 import partner4 from '../../assets/images/partner-4.png.webp';
 import partner5 from '../../assets/images/partner-5.png.webp';
 import Ban from '../../assets/images/undraw_co-working_825n.svg';
+
 
 const partners = [
   { src: partner1, alt: "Microsoft" },
@@ -29,6 +31,9 @@ function Main() {
     <main className='main'>
       <section id="home">
         <Banner Ban={Ban} />
+      </section>
+      <section id="video">
+        <VideoEmbed />
       </section>
 
       <section id="company">
@@ -55,10 +60,6 @@ function Main() {
         <Questions />
       </section>
 
-      {/* Add the StyledClock here */}
-      <section id="clock">
-        <StyledClock />
-      </section>
     </main>
   );
 }
