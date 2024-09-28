@@ -1,9 +1,7 @@
-// Import the necessary Firebase services
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage'; // Import getStorage for Firebase Storage
+import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
-// Your Firebase configuration object
 const firebaseConfig = {
     apiKey: "AIzaSyC0WH1RAIZgZ7c4x4xBV9Z8lubD0ERTXww",
     authDomain: "reactbrief.firebaseapp.com",
@@ -14,14 +12,10 @@ const firebaseConfig = {
     measurementId: "G-BNHYDJ1HG5"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore
 const db = getFirestore(app);
 
-// Initialize Firebase Storage
 const storage = getStorage(app);
 const auth = getAuth(app);
-// Export both Firestore and Storage
 export { db, storage,auth };

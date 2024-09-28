@@ -3,9 +3,11 @@ import './Pricing.css';
 import PricingBox from './box/PricingBox';
 import { auth, db } from '../../../firebase'; // Import Firebase Auth and Firestore
 import { collection, addDoc } from 'firebase/firestore'; // Import Firestore methods for adding documents
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
 
 function Pricing() {
   const [userEmail, setUserEmail] = useState(null); // To store the logged-in user's email
+  const navigate = useNavigate(); // For navigation
 
   // UseEffect to get the logged-in user's email
   useEffect(() => {
@@ -25,6 +27,7 @@ function Pricing() {
   const handleSelectPlan = async (planName, price) => {
     if (!userEmail) {
       alert('You need to be logged in to select a plan.');
+      navigate('/login'); // Redirect to login page if not logged in
       return;
     }
 
@@ -36,7 +39,7 @@ function Pricing() {
         price: price,
         timestamp: new Date(),
       });
-      alert(`Plan ${planName} selected successfully!`);
+      navigate(`/plan?name=${planName}&price=${price}`); // Navigate to the Plan page with selected plan details
     } catch (error) {
       console.error('Error saving the plan: ', error);
     }
@@ -83,7 +86,7 @@ function Pricing() {
             price={plan.price}
             isFree={plan.isFree}
             features={plan.features}
-            onSelectPlan={handleSelectPlan} // Pass the handleSelectPlan function
+            onSelectPlan={() => handleSelectPlan(plan.planName, plan.price)} // Pass the handleSelectPlan function
           />
         ))}
       </div>

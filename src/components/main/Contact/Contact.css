@@ -1,0 +1,52 @@
+.contact-container {
+  padding: 80px 20px; /* Add more padding for better spacing */
+  text-align: center;
+  background-color: #f0f4f8;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px; /* Increased max-width to give the form more space */
+  margin: 0 auto;
+  background-color: white; /* Add background color to make the form stand out */
+  padding: 40px; /* Add padding inside the form */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+.contact-form label {
+  text-align: left;
+  margin-bottom: 10px;
+  font-weight: bold; /* Make labels bold for better readability */
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px; /* Increase font size for better readability */
+}
+
+.contact-form button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px; /* Increase button text size */
+  transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+.contact-form button:hover {
+  background-color: #45a049;
+}
+
+.contact-form .error {
+  color: red;
+  margin-top: 10px;
+}

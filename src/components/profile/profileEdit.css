@@ -1,0 +1,95 @@
+/* Container styling */
+.profile-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa, #007bff);
+    padding: 20px;
+  }
+  
+  /* Card styling */
+  .profile-card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 800px; /* Increased width for better layout */
+    width: 100%; /* Ensure responsiveness */
+  }
+  
+  /* Title styling */
+  .profile-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 30px;
+  }
+  
+  /* Form styling */
+  .profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for inputs */
+    gap: 20px; /* Space between form fields */
+    text-align: left;
+  }
+  
+  /* Full-width form elements (e.g., Save button) */
+  .profile-form .full-width {
+    grid-column: span 2; /* Span both columns */
+  }
+  
+  /* Form group styling */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  
+  /* Centering the save button */
+  .save-btn-container {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    grid-column: span 2; /* Ensure the button spans both columns */
+  }
+  
+  /* Save button */
+  .save-btn {
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .save-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .profile-form {
+      grid-template-columns: 1fr; /* Stack form elements on smaller screens */
+    }
+  
+    .profile-card {
+      padding: 20px;
+    }
+  }
+  

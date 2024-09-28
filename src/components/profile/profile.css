@@ -1,0 +1,71 @@
+/* Container styling */
+.profile-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa, #007bff);
+}
+
+/* Card styling */
+.profile-card {
+  background-color: white;
+  padding: 60px; /* Increased padding for a bigger feel */
+  border-radius: 15px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 450px; /* Increased width */
+}
+
+/* Username styling */
+.profile-username {
+  font-size: 32px; /* Larger font size */
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 15px; /* More space below the username */
+}
+
+/* Membership styling */
+.profile-membership {
+  font-size: 20px; /* Larger text for membership */
+  color: #6c757d;
+  margin-bottom: 35px; /* Increased space before buttons */
+}
+
+/* Button container */
+.profile-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 30px; /* More space between buttons */
+}
+
+/* Buttons */
+.btn {
+  padding: 15px 30px; /* Larger padding for bigger buttons */
+  font-size: 18px; /* Increased font size */
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Edit button */
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Contracts button */
+.contracts-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.contracts-btn:hover {
+  background-color: #5a6268;
+}

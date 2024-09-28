@@ -13,9 +13,8 @@ function Header() {
 
   return (
     <header className='header'>
-        <div className={width > 976 ? 'container' : 'header__container'}>
+        <div className={width > 976 ? 'header__full-width' : 'header__container'}>
             <Menu/>
-            
         </div>
     </header>
   )

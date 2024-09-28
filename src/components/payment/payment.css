@@ -1,0 +1,76 @@
+/* src/components/payment/payment.css */
+.payment-container {
+    max-width:1000px; /* Increased width to accommodate the animation */
+    margin: 130px auto;
+    padding: 40px;
+    background-color: #f0f4f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .payment-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .payment-form {
+    flex: 1;
+    min-width: 300px; /* Ensure the form does not shrink too much */
+    margin-right: 20px;
+  }
+  
+  .payment-form label {
+    margin-bottom: 5px;
+  }
+  
+  .payment-form input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .payment-form button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .payment-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-width: 300px; /* Ensure the animation does not shrink too much */
+  }
+  
+  /* Thank You Card */
+  .thank-you-card {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 100px auto;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
