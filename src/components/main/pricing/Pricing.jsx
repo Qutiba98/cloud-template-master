@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Pricing.css';
 import PricingBox from './box/PricingBox';
-import { auth, db } from '../../../firebase'; // Import Firebase Auth and Firestore
-import { collection, addDoc } from 'firebase/firestore'; // Import Firestore methods for adding documents
+import { auth } from '../../../firebase'; // Firebase Auth import only since Firestore is not needed for this change
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
 
 function Pricing() {
@@ -24,25 +23,13 @@ function Pricing() {
   }, []);
 
   // Function to handle selecting a plan
-  const handleSelectPlan = async (planName, price) => {
+  const handleSelectPlan = (planName, price) => {
     if (!userEmail) {
-      alert('You need to be logged in to select a plan.');
-      navigate('/login'); // Redirect to login page if not logged in
-      return;
-    }
-
-    try {
-      // Add a new document in Firestore for the selected plan under the 'userPlans' collection
-      await addDoc(collection(db, 'userPlans'), {
-        email: userEmail,
-        planName: planName,
-        price: price,
-        stauts:'Pending',
-        timestamp: new Date(),
-      });
-      navigate(`/plan?name=${planName}&price=${price}`); // Navigate to the Plan page with selected plan details
-    } catch (error) {
-      console.error('Error saving the plan: ', error);
+      // If the user is not logged in, navigate to the login page
+      navigate('/login');
+    } else {
+      // Navigate to the plan page with the selected plan details
+      navigate(`/plan?name=${planName}&price=${price}`);
     }
   };
 

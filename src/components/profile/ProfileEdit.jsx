@@ -142,6 +142,7 @@ function ProfileEdit() {
       name="membership"
       value={formData.membership}
       onChange={handleChange}
+      disabled
     />
   </div>
   <div className="form-group">

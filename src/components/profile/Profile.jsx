@@ -38,6 +38,10 @@ function Profile() {
     navigate('/profile/edit'); // Navigate to the ProfileEdit page
   };
 
+  const handleViewContracts = () => {
+    navigate('/profile/contract'); // Navigate to the Contracts page
+  };
+
   return (
     <div className="profile-container">
       <div className="profile-card">
@@ -46,7 +50,7 @@ function Profile() {
         
         <div className="profile-actions">
           <button className="btn edit-btn" onClick={handleEditProfile}>Edit Profile</button>
-          <button className="btn contracts-btn">View Contracts</button>
+          <button className="btn contracts-btn" onClick={handleViewContracts}>View Contracts</button>
         </div>
       </div>
     </div>

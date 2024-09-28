@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './plan.css';
 import PricingBox from '../main/pricing/box/PricingBox';
 import { auth, db } from '../../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore'; // Import updateDoc for updating user's document
 import { useNavigate } from 'react-router-dom';
 
 function Plan() {
   const [userEmail, setUserEmail] = useState(null);
+  const [userId, setUserId] = useState(null); // To store user's ID for document update
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +17,7 @@ function Plan() {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUserEmail(user.email);
+        setUserId(user.uid); // Set userId for document update
       } else {
         setUserEmail(null);
         navigate('/login'); // Redirect to login page if not logged in
@@ -26,21 +28,26 @@ function Plan() {
   }, [navigate]);
 
   const handleSelectPlan = async (planName, price) => {
-    if (!userEmail) {
+    if (!userEmail || !userId) {
       navigate('/login');
       return;
     }
 
     try {
-      await addDoc(collection(db, 'userPlans'), {
-        email: userEmail,
-        planName: planName,
-        price: price,
-        timestamp: new Date(),
+      // Update the user's document in the 'users' collection
+      const userDocRef = doc(db, 'users', userId);
+      await updateDoc(userDocRef, {
+        subscriptionPlan: {
+          planName: planName,
+          price: price,
+          status: 'Pending',
+          timestamp: new Date(),
+        },
       });
+
       navigate(`/payment?planName=${planName}&price=${price}`);
     } catch (error) {
-      console.error('Error saving the plan: ', error);
+      console.error('Error updating the plan: ', error);
     }
   };
 

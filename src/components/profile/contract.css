@@ -1,0 +1,171 @@
+.contracts-container {
+  padding: 20px;
+  text-align: center;
+  height: 100vh; /* Make the container cover the entire height */
+  margin-top: 5rem;
+}
+
+.contracts-content {
+  display: flex;
+  justify-content: space-around !important; /* Spread the contract card and animation */
+  align-items: center;
+  height: 60%; /* Full height for content */
+}
+
+.contract-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  width: 50%; /* Contract card covers left side */
+  height: 80%;
+}
+
+.animation-container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px; /* Ensure the animation does not shrink too much */
+}
+.contract-card h3 {
+  margin-bottom: 10px;
+}
+
+.contract-actions button {
+  background-color: #94a3b8 !important;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contract-actions button:hover {
+  background-color: #cbd5e1 !important;
+}
+
+.add-subscription-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-subscription-btn:hover {
+  background-color: #4ade80;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.animation-container {
+  width: 40%; /* Animation covers right side */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contract-popup .swal2-popup {
+  font-family: 'Arial', sans-serif;
+  text-align: left;
+  padding: 20px;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+}
+
+.contract-popup .swal2-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.contract-popup p {
+  margin: 5px 0;
+}
+
+/* CSS for the card design and hover effects */
+
+.card p {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #666;
+}
+
+.card p.small {
+  font-size: 14px;
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background-color: var(--card-color); /* Dynamic color */
+  border-radius: 0 4px 0 32px;
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+  font-family: courier, sans;
+}
+
+.card1 {
+  display: block;
+  position: relative;
+  max-width: 262px;
+  background-color: #f2f8f9;
+  border-radius: 4px;
+  padding: 32px 24px;
+  margin: 12px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.card1:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -16px;
+  right: -16px;
+  background: var(--card-color); /* Dynamic color */
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform 0.25s ease-out;
+}
+
+.card1:hover:before {
+  transform: scale(21);
+}
+
+.card1:hover p {
+  transition: all 0.3s ease-out;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card1:hover h3 {
+  transition: all 0.3s ease-out;
+  color: #fff;
+}
+.contract-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+

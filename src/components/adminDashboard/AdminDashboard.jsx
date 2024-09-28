@@ -5,40 +5,41 @@ import './adminDashboard.css'; // Assuming you already have a CSS file for styli
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
-  const [userPlans, setUserPlans] = useState([]);
+  const [plans, setPlans] = useState([]); // Store available subscription plans
   const [editingUser, setEditingUser] = useState(null);
-  const [editingPlan, setEditingPlan] = useState(null);
   const [roleOptions] = useState(['User', 'Admin', 'Moderator', 'Guest']);
   const [statusOptions] = useState(['Pending', 'Accept', 'Reject']);
-  
+
   // State for search queries
   const [userSearchQuery, setUserSearchQuery] = useState('');
-  const [planSearchQuery, setPlanSearchQuery] = useState('');
 
-  // Fetching users and userPlans from Firestore
+  // Fetching users and subscription plans from Firestore
   useEffect(() => {
-    const fetchUsers = async () => {
-      const userCollection = collection(db, 'users');
-      const userSnapshot = await getDocs(userCollection);
-      const userList = userSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUsers(userList);
+    const fetchUsersAndPlans = async () => {
+      try {
+        // Fetch users from 'users' collection
+        const userCollection = collection(db, 'users');
+        const userSnapshot = await getDocs(userCollection);
+        const userList = userSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(userList);
+
+        // Fetch subscription plans from 'subscriptionPlans' collection
+        const plansCollection = collection(db, 'subscriptionPlans');
+        const plansSnapshot = await getDocs(plansCollection);
+        const plansList = plansSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPlans(plansList);
+      } catch (error) {
+        console.error('Error fetching users and plans: ', error);
+      }
     };
 
-    const fetchUserPlans = async () => {
-      const userPlansCollection = collection(db, 'userPlans');
-      const userPlansSnapshot = await getDocs(userPlansCollection);
-      const userPlansList = userPlansSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUserPlans(userPlansList);
-    };
-
-    fetchUsers();
-    fetchUserPlans();
+    fetchUsersAndPlans();
   }, []);
 
   // Filter users based on search query
@@ -48,27 +49,15 @@ function AdminDashboard() {
     user.phoneNumber?.toLowerCase().includes(userSearchQuery.toLowerCase())
   );
 
-  // Filter user plans based on search query
-  const filteredPlans = userPlans.filter(plan =>
-    plan.email?.toLowerCase().includes(planSearchQuery.toLowerCase()) ||
-    plan.planName?.toLowerCase().includes(planSearchQuery.toLowerCase()) ||
-    plan.userId?.toLowerCase().includes(planSearchQuery.toLowerCase()) ||
-    plan.status?.toLowerCase().includes(planSearchQuery.toLowerCase())
-  );
+  // Filter users with pending plan requests
+  const pendingRequests = users.filter(user => user.planStatus === 'Pending');
 
-  // Handle input change in the editing form (for both users and plans)
-  const handleInputChange = (e, field, type) => {
-    if (type === 'user') {
-      setEditingUser({
-        ...editingUser,
-        [field]: e.target.value,
-      });
-    } else if (type === 'plan') {
-      setEditingPlan({
-        ...editingPlan,
-        [field]: e.target.value,
-      });
-    }
+  // Handle input change in the editing form (for users)
+  const handleInputChange = (e, field) => {
+    setEditingUser({
+      ...editingUser,
+      [field]: e.target.value,
+    });
   };
 
   // Handle save button for user status updates
@@ -79,9 +68,26 @@ function AdminDashboard() {
       const updateData = {
         fullName: editingUser.fullName || 'N/A',
         phoneNumber: editingUser.phoneNumber || 'N/A',
-        membership: editingUser.membership || 'Free',
         role: editingUser.role || 'User',
+        planName: editingUser.planName || 'Free', // Update the selected plan
+        planStatus: editingUser.planStatus || 'Pending', // Save the plan status
       };
+
+      // If the admin accepts the plan, calculate signing and expiration dates
+      if (editingUser.planStatus === 'Accept') {
+        const signingDate = new Date(); // Current date for signing
+        const expirationDate = new Date();
+        expirationDate.setMonth(signingDate.getMonth() + 1); // Add 1 month to signing date
+
+        // Update planName and subscriptionPlan with signing and expiration dates
+        updateData.planName = editingUser.planName; // Update the user's planName
+        updateData.subscriptionPlan = {
+          ...editingUser.subscriptionPlan,
+          planName: editingUser.planName, // Ensure the correct plan is stored in subscriptionPlan
+          signingDate: signingDate, // Store signing date
+          expirationDate: expirationDate, // Store expiration date
+        };
+      }
 
       try {
         await updateDoc(userDoc, updateData);
@@ -102,32 +108,10 @@ function AdminDashboard() {
     }
   };
 
-  // Handle save button for plan status updates
-  const handleSavePlan = async () => {
-    if (editingPlan) {
-      const planDoc = doc(db, 'userPlans', editingPlan.id);
-
-      const updateData = {
-        status: editingPlan.status || 'Pending',
-      };
-
-      try {
-        await updateDoc(planDoc, updateData);
-        alert('Plan status updated successfully!');
-
-        // Update the plans list with the new status
-        setUserPlans((prevPlans) =>
-          prevPlans.map((plan) =>
-            plan.id === editingPlan.id ? { ...editingPlan } : plan
-          )
-        );
-
-        setEditingPlan(null);
-      } catch (error) {
-        console.error('Error updating plan: ', error.message);
-        alert(`Error updating plan: ${error.message}`);
-      }
-    }
+  // Approve or Reject plan with a delay to ensure the state is set first
+  const handlePlanAction = (user, status) => {
+    setEditingUser({ ...user, planStatus: status });
+    setTimeout(() => handleSaveUser(), 0);
   };
 
   return (
@@ -151,6 +135,8 @@ function AdminDashboard() {
               <th>Email</th>
               <th>Phone Number</th>
               <th>Role</th>
+              <th>Plan</th>
+              <th>Plan Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -161,8 +147,42 @@ function AdminDashboard() {
                 <td>{user.email || 'N/A'}</td>
                 <td>{user.phoneNumber || 'N/A'}</td>
                 <td>{user.role || 'User'}</td>
+                <td>{user.planName || 'No Plan'}</td>
+                <td>{user.planStatus || 'Pending'}</td>
                 <td>
                   <button onClick={() => setEditingUser(user)}>Edit</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pending plan requests section */}
+      <div className="dashboard-section">
+        <h2>Pending Plan Requests</h2>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pendingRequests.map((user) => (
+              <tr key={user.id}>
+                <td>{user.fullName || 'N/A'}</td>
+                <td>{user.email || 'N/A'}</td>
+                <td>{user.planName || 'No Plan'}</td>
+                <td>
+                  <button onClick={() => handlePlanAction(user, 'Accept')}>
+                    Approve
+                  </button>
+                  <button onClick={() => handlePlanAction(user, 'Reject')}>
+                    Reject
+                  </button>
                 </td>
               </tr>
             ))}
@@ -178,7 +198,7 @@ function AdminDashboard() {
             <input
               type="text"
               value={editingUser.fullName}
-              onChange={(e) => handleInputChange(e, 'fullName', 'user')}
+              onChange={(e) => handleInputChange(e, 'fullName')}
             />
           </label>
           <label>
@@ -186,22 +206,14 @@ function AdminDashboard() {
             <input
               type="text"
               value={editingUser.phoneNumber}
-              onChange={(e) => handleInputChange(e, 'phoneNumber', 'user')}
-            />
-          </label>
-          <label>
-            Membership:
-            <input
-              type="text"
-              value={editingUser.membership}
-              onChange={(e) => handleInputChange(e, 'membership', 'user')}
+              onChange={(e) => handleInputChange(e, 'phoneNumber')}
             />
           </label>
           <label>
             Role:
             <select
               value={editingUser.role}
-              onChange={(e) => handleInputChange(e, 'role', 'user')}
+              onChange={(e) => handleInputChange(e, 'role')}
             >
               {roleOptions.map((role) => (
                 <option key={role} value={role}>
@@ -210,57 +222,24 @@ function AdminDashboard() {
               ))}
             </select>
           </label>
-          <div className="button-group">
-            <button onClick={handleSaveUser}>Save</button>
-            <button onClick={() => setEditingUser(null)}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      {/* User plans management section with search */}
-      <div className="dashboard-section">
-        <h2>User Plans</h2>
-        <input
-          type="text"
-          placeholder="Search Plans"
-          value={planSearchQuery}
-          onChange={(e) => setPlanSearchQuery(e.target.value)}
-          className="search-input"
-        />
-        <table className="admin-table">
-          <thead>
-            <tr>
-            <th>User Email</th>
-              <th>Plan Name</th>
-             
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPlans.map((plan) => (
-              <tr key={plan.id}>
-                 <td>{plan.email || 'N/A'}</td>
-                <td>{plan.planName || 'N/A'}</td>
-               
-                <td>{plan.status || 'Pending'}</td>
-                <td>
-                  <button onClick={() => setEditingPlan(plan)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {editingPlan && (
-        <div className="edit-plan-form">
-          <h3>Edit Plan Status</h3>
           <label>
-            Status:
+            Plan:
             <select
-              value={editingPlan.status}
-              onChange={(e) => handleInputChange(e, 'status', 'plan')}
+              value={editingUser.planName}
+              onChange={(e) => handleInputChange(e, 'planName')}
+            >
+              {plans.map((plan) => (
+                <option key={plan.id} value={plan.planName}>
+                  {plan.planName}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Plan Status:
+            <select
+              value={editingUser.planStatus}
+              onChange={(e) => handleInputChange(e, 'planStatus')}
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -270,8 +249,8 @@ function AdminDashboard() {
             </select>
           </label>
           <div className="button-group">
-            <button onClick={handleSavePlan}>Save</button>
-            <button onClick={() => setEditingPlan(null)}>Cancel</button>
+            <button onClick={handleSaveUser}>Save</button>
+            <button onClick={() => setEditingUser(null)}>Cancel</button>
           </div>
         </div>
       )}

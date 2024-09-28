@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './payment.css';
 import { db, auth } from '../../firebase';
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore'; // Import Firestore functions
+import { collection, addDoc, getDoc, doc } from 'firebase/firestore'; // Import Firestore functions
 import Swal from 'sweetalert2';
 import '@dotlottie/player-component';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
@@ -25,15 +25,20 @@ function Payment() {
         setUser(user);
 
         try {
-          // Query Firestore to find the user's selected plan by email
-          const planQuery = query(collection(db, 'userPlans'), where('email', '==', user.email));
-          const planSnapshot = await getDocs(planQuery);
+          // Fetch the user's document from the 'users' collection
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDoc = await getDoc(userDocRef);
 
-          if (!planSnapshot.empty) {
-            const planDoc = planSnapshot.docs[0]; // Assuming there's only one plan per user
-            setSubscription(planDoc.data()); // Store the plan details in state
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            // Check if the user has a subscription plan
+            if (userData.subscriptionPlan) {
+              setSubscription(userData.subscriptionPlan); // Store the subscription plan details in state
+            } else {
+              setError('No subscription plan found. Please select a plan first.');
+            }
           } else {
-            setError('No subscription plan found. Please select a plan first.');
+            setError('User data not found.');
           }
         } catch (err) {
           console.error('Error fetching subscription plan:', err);
